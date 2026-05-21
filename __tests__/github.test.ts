@@ -2,6 +2,7 @@ process.env.GITHUB_TOKEN = 'fake-token';
 process.env.GITHUB_OWNER = 'test-owner';
 process.env.GITHUB_REPO = 'test-repo';
 
+import { jest } from '@jest/globals';
 import { getFileFromGitHub, updateFileInGitHub, uploadFileToGitHub } from '../lib/github';
 
 const mockFetch = jest.fn();

@@ -4,13 +4,13 @@ const config: Config = {
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { useESM: true }],
+    '^.+\\.tsx?$': ['ts-jest', {
+      useESM: true,
+      tsconfig: { module: 'es2020' }
+    }]
   },
   testMatch: ['**/__tests__/**/*.test.ts'],
   moduleNameMapper: { '^@/(.*)$': '<rootDir>/$1' },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(jose)/)',
-  ],
 };
 
 export default config;

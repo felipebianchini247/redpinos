@@ -1,8 +1,15 @@
-import fs from 'fs';
-import { getHomeContent, getNovedades, getNoticiaBySlug, getQuienesSomosContent } from '../lib/content';
+import { jest } from '@jest/globals';
 
-jest.mock('fs');
-const mockFs = fs as jest.Mocked<typeof fs>;
+jest.unstable_mockModule('fs', () => ({
+  default: {
+    readFileSync: jest.fn(),
+  }
+}));
+
+const { default: fs } = await import('fs');
+const { getHomeContent, getNovedades, getNoticiaBySlug, getQuienesSomosContent } = await import('../lib/content');
+
+const mockFs = fs as any;
 
 describe('getHomeContent', () => {
   it('parses home.json correctly', () => {
