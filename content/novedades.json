@@ -1,5 +1,14 @@
 [
   {
+    "id": "42cb5000-07ad-4eb9-a493-262410a67232",
+    "slug": "visita-al-centro-atomico",
+    "titulo": "Visita al centro atomico",
+    "texto": "El dia 11 de mayo se realizo una visita...",
+    "imagen": "/uploads/1779396460846.png",
+    "fecha": "2026-05-11",
+    "creadoEn": "2026-05-21T20:47:41.897Z"
+  },
+  {
     "id": "a7184938-2d87-4091-8c19-53470a32f5cd",
     "slug": "prueba-19",
     "titulo": "prueba 19",
