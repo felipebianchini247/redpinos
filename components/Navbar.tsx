@@ -30,7 +30,7 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  const navClass = `main-nav dark stick-fixed${scrolled ? '' : ' transparent'}`;
+  const navClass = `main-nav dark stick-fixed${scrolled ? ' small-height' : ' transparent'}`;
 
   return (
     <nav className={navClass}>

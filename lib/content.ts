@@ -15,6 +15,26 @@ export interface QuienesSomosContent {
   textoIntegrantes: string;
 }
 
+export interface ObjetivosContent {
+  introTexto: string;
+}
+
+export interface ComoParticiparContent {
+  introTexto: string;
+}
+
+export interface FaqItem {
+  q: string;
+  a: string;
+}
+
+export interface ContactoContent {
+  whatsapp: string;
+  whatsappNota: string;
+  email: string;
+  direccion: string;
+}
+
 export interface Noticia {
   id: string;
   slug: string;
@@ -33,6 +53,26 @@ export function getHomeContent(): HomeContent {
 export function getQuienesSomosContent(): QuienesSomosContent {
   const raw = fs.readFileSync(path.join(contentDir, 'quienesSomos.json'), 'utf-8');
   return JSON.parse(raw) as QuienesSomosContent;
+}
+
+export function getObjetivosContent(): ObjetivosContent {
+  const raw = fs.readFileSync(path.join(contentDir, 'objetivos.json'), 'utf-8');
+  return JSON.parse(raw) as ObjetivosContent;
+}
+
+export function getComoParticiparContent(): ComoParticiparContent {
+  const raw = fs.readFileSync(path.join(contentDir, 'comoParticipar.json'), 'utf-8');
+  return JSON.parse(raw) as ComoParticiparContent;
+}
+
+export function getFaqContent(): FaqItem[] {
+  const raw = fs.readFileSync(path.join(contentDir, 'faq.json'), 'utf-8');
+  return JSON.parse(raw) as FaqItem[];
+}
+
+export function getContactoContent(): ContactoContent {
+  const raw = fs.readFileSync(path.join(contentDir, 'contacto.json'), 'utf-8');
+  return JSON.parse(raw) as ContactoContent;
 }
 
 export function getNovedades(): Noticia[] {

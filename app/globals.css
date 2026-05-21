@@ -10,3 +10,15 @@ html {
   background-position: center;
   background-repeat: no-repeat;
 }
+
+/* Navbar link vertical centering — replaces jQuery height_line() */
+.inner-nav ul > li > a {
+  display: inline-flex;
+  align-items: center;
+  height: 75px;
+  line-height: 1;
+}
+
+.main-nav.small-height .inner-nav ul > li > a {
+  height: 55px;
+}

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import { verifyCredentials, createSessionToken } from '@/lib/auth';
 import { getFileFromGitHub, updateFileInGitHub, uploadFileToGitHub } from '@/lib/github';
 import { slugify } from '@/lib/slugify';
-import type { Noticia, HomeContent, QuienesSomosContent } from '@/lib/content';
+import type { Noticia, HomeContent, QuienesSomosContent, ObjetivosContent, ComoParticiparContent, FaqItem, ContactoContent } from '@/lib/content';
 
 // AUTH
 export async function loginAction(formData: FormData) {
@@ -85,6 +85,7 @@ export async function deleteNoticiaAction(id: string) {
   return { success: true };
 }
 
+// HOME
 export async function saveHomeAction(formData: FormData) {
   const data: HomeContent = {
     heroTitulo: formData.get('heroTitulo') as string,
@@ -95,6 +96,7 @@ export async function saveHomeAction(formData: FormData) {
   return { success: true };
 }
 
+// QUIENES SOMOS
 export async function saveQuienesSomosAction(formData: FormData) {
   const data: QuienesSomosContent = {
     aniofundacion: formData.get('aniofundacion') as string,
@@ -104,5 +106,45 @@ export async function saveQuienesSomosAction(formData: FormData) {
   };
   const { sha } = await getFileFromGitHub('content/quienesSomos.json');
   await updateFileInGitHub('content/quienesSomos.json', JSON.stringify(data, null, 2), sha);
+  return { success: true };
+}
+
+// OBJETIVOS
+export async function saveObjetivosAction(formData: FormData) {
+  const data: ObjetivosContent = {
+    introTexto: formData.get('introTexto') as string,
+  };
+  const { sha } = await getFileFromGitHub('content/objetivos.json');
+  await updateFileInGitHub('content/objetivos.json', JSON.stringify(data, null, 2), sha);
+  return { success: true };
+}
+
+// COMO PARTICIPAR
+export async function saveComoParticiparAction(formData: FormData) {
+  const data: ComoParticiparContent = {
+    introTexto: formData.get('introTexto') as string,
+  };
+  const { sha } = await getFileFromGitHub('content/comoParticipar.json');
+  await updateFileInGitHub('content/comoParticipar.json', JSON.stringify(data, null, 2), sha);
+  return { success: true };
+}
+
+// FAQ
+export async function saveFaqAction(items: FaqItem[]) {
+  const { sha } = await getFileFromGitHub('content/faq.json');
+  await updateFileInGitHub('content/faq.json', JSON.stringify(items, null, 2), sha);
+  return { success: true };
+}
+
+// CONTACTO
+export async function saveContactoAction(formData: FormData) {
+  const data: ContactoContent = {
+    whatsapp: formData.get('whatsapp') as string,
+    whatsappNota: formData.get('whatsappNota') as string,
+    email: formData.get('email') as string,
+    direccion: formData.get('direccion') as string,
+  };
+  const { sha } = await getFileFromGitHub('content/contacto.json');
+  await updateFileInGitHub('content/contacto.json', JSON.stringify(data, null, 2), sha);
   return { success: true };
 }

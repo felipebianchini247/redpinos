@@ -1,5 +1,9 @@
 // app/(site)/contacto/page.tsx
+import { getContactoContent } from '@/lib/content';
+
 export default function ContactoPage() {
+  const { whatsapp, whatsappNota, email, direccion } = getContactoContent();
+
   return (
     <>
       <section
@@ -26,15 +30,15 @@ export default function ContactoPage() {
                   <div className="contact-item">
                     <div className="ci-icon"><i className="fa fa-whatsapp" /></div>
                     <div className="ci-title font-alt">Whatsapp</div>
-                    <div className="ci-text">+54 9 294 413-0948</div>
-                    <div className="ci-text2">Solo mensajes de texto y fotos</div>
+                    <div className="ci-text">{whatsapp}</div>
+                    {whatsappNota && <div className="ci-text2">{whatsappNota}</div>}
                   </div>
                 </div>
                 <div className="col-sm-6 col-lg-4 pt-20 pb-20 pb-xs-0">
                   <div className="contact-item">
                     <div className="ci-icon"><i className="fa fa-map-marker" /></div>
                     <div className="ci-title font-alt">Dirección</div>
-                    <div className="ci-text">Bariloche, Rio Negro, Argentina</div>
+                    <div className="ci-text">{direccion}</div>
                   </div>
                 </div>
                 <div className="col-sm-6 col-lg-4 pt-20 pb-20 pb-xs-0">
@@ -42,7 +46,7 @@ export default function ContactoPage() {
                     <div className="ci-icon"><i className="fa fa-envelope" /></div>
                     <div className="ci-title font-alt">Email</div>
                     <div className="ci-text">
-                      <a href="mailto:redpinosgobernanza@gmail.com">redpinosgobernanza@gmail.com</a>
+                      <a href={`mailto:${email}`}>{email}</a>
                     </div>
                   </div>
                 </div>

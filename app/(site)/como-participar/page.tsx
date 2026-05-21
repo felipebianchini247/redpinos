@@ -1,4 +1,6 @@
 // app/(site)/como-participar/page.tsx
+import { getComoParticiparContent } from '@/lib/content';
+
 const items = [
   { img: 'sensibilizacion.png', title: 'Sensibilización', delay: '0.1s', text: 'Compartí información sobre las invasiones de pinos y actividades de la Red con tu círculo y redes sociales, utilizando materiales, contenidos y novedades de la Red PINOS.\nParticipá en charlas, talleres y eventos organizados por la Red PINOS.' },
   { img: 'controlyrestauracion.png', title: 'Control y Restauración', delay: '0.3s', text: 'Unite a las campañas de remoción manual de plántulas y renovales de pinos invasores.\nParticipá en talleres de capacitación: aprendé sobre las mejores prácticas para la identificación, la remoción de pinos invasores y la gestión de áreas intervenidas.' },
@@ -8,6 +10,8 @@ const items = [
 ];
 
 export default function ComoParticiparPage() {
+  const { introTexto } = getComoParticiparContent();
+
   return (
     <>
       <section
@@ -28,9 +32,8 @@ export default function ComoParticiparPage() {
         <div className="container relative">
           <div className="row">
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
-              <div className="section-text align-center mb-70 mb-xs-40">
-                Convertite en voluntario de Red PINOS y ayudanos a cuidar el bosque.<br />
-                ¿Te apasiona la naturaleza y querés contribuir a su protección? La Red PINOS te invita a formar parte de la solución, trabajando juntos para controlar las invasiones de pinos. Tenemos un montón de actividades en las que te podés sumar:
+              <div className="section-text align-center mb-70 mb-xs-40" style={{ whiteSpace: 'pre-line' }}>
+                {introTexto}
               </div>
             </div>
           </div>

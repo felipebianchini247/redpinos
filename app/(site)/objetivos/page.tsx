@@ -1,13 +1,17 @@
 // app/(site)/objetivos/page.tsx
+import { getObjetivosContent } from '@/lib/content';
+
+const items = [
+  { icon: 'fa-solid fa-building-columns fa-2xl', title: 'Línea de Base', desc: 'Establecer la línea de base socio ambiental vinculada a las invasiones de pinos dentro de las áreas de intervención.' },
+  { icon: 'fa-solid fa-tree fa-2xl', title: 'Valoración', desc: 'Promover la valoración relativa de especies arbóreas autóctonas vs. exóticas, dentro de San Carlos de Bariloche y alrededores.' },
+  { icon: 'fa-solid fa-tree-city fa-2xl', title: 'Detección', desc: 'Promover la detección y registro de focos de invasión en forma participativa.' },
+  { icon: 'fa-solid fa-hand-fist fa-2xl', title: 'Remoción', desc: 'Organizar la remoción manual de renovales silvestres de pino con la participación de voluntarios, registrando las extracciones para ponderar la gravedad de cada caso. Impulsar el corte de ejemplares semilleros con la autorización y el apoyo de las autoridades correspondientes.' },
+  { icon: 'fa-solid fa-handshake fa-2xl', title: 'Convenios de cooperación', desc: 'Promover la realización de convenios de cooperación entre los sectores, instituciones y jurisdicciones involucrados.' },
+  { icon: 'fa-solid fa-chart-line fa-2xl', title: 'Análisis', desc: 'Analizar la eficacia de etapas tempranas de la gobernanza colaborativa de invasiones por pinos y transferir la experiencia a otros casos con problemáticas similares.' },
+];
+
 export default function ObjetivosPage() {
-  const items = [
-    { icon: 'fa-solid fa-building-columns fa-2xl', title: 'Línea de Base', desc: 'Establecer la línea de base socio ambiental vinculada a las invasiones de pinos dentro de las áreas de intervención.' },
-    { icon: 'fa-solid fa-tree fa-2xl', title: 'Valoración', desc: 'Promover la valoración relativa de especies arbóreas autóctonas vs. exóticas, dentro de San Carlos de Bariloche y alrededores.' },
-    { icon: 'fa-solid fa-tree-city fa-2xl', title: 'Detección', desc: 'Promover la detección y registro de focos de invasión en forma participativa.' },
-    { icon: 'fa-solid fa-hand-fist fa-2xl', title: 'Remoción', desc: 'Organizar la remoción manual de renovales silvestres de pino con la participación de voluntarios, registrando las extracciones para ponderar la gravedad de cada caso. Impulsar el corte de ejemplares semilleros con la autorización y el apoyo de las autoridades correspondientes.' },
-    { icon: 'fa-solid fa-handshake fa-2xl', title: 'Convenios de cooperación', desc: 'Promover la realización de convenios de cooperación entre los sectores, instituciones y jurisdicciones involucrados.' },
-    { icon: 'fa-solid fa-chart-line fa-2xl', title: 'Análisis', desc: 'Analizar la eficacia de etapas tempranas de la gobernanza colaborativa de invasiones por pinos y transferir la experiencia a otros casos con problemáticas similares.' },
-  ];
+  const { introTexto } = getObjetivosContent();
 
   return (
     <>
@@ -30,7 +34,7 @@ export default function ObjetivosPage() {
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
               <div className="section-text align-center">
                 <h3>LÍNEA DE BASE</h3>
-                La Red PINOS trabaja para reducir el impacto ecológico y ambiental de las invasiones de pinos, impulsando la colaboración interinstitucional y la participación ciudadana en la identificación, el registro y la remoción de estas especies en procesos de invasión. Con este objetivo, busca construir un modelo de gobernanza ambiental que promueva soluciones sostenibles para proteger la biodiversidad y mejorar el bienestar de la sociedad.
+                {introTexto}
               </div>
             </div>
           </div>
