@@ -47,7 +47,7 @@ export default function PreguntasFrecuentesPage() {
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
               <dl className="accordion">
                 {faqs.map(({ q, a }, i) => (
-                  <span key={i}>
+                  <div key={q}>
                     <dt>
                       <a
                         href="#"
@@ -57,7 +57,7 @@ export default function PreguntasFrecuentesPage() {
                       </a>
                     </dt>
                     <dd style={{ display: openIndex === i ? 'block' : 'none' }}>{a}</dd>
-                  </span>
+                  </div>
                 ))}
               </dl>
             </div>
