@@ -1,9 +1,9 @@
 // app/(site)/layout.tsx
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import PageLoader from '@/components/PageLoader';
+import WowScript from '@/components/WowScript';
 
 export const metadata: Metadata = {
   title: 'Red PINOS',
@@ -33,14 +33,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
       </div>
-      <Script
-        src="/js/wow.min.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          // @ts-ignore
-          if (typeof WOW !== 'undefined') new WOW({ offset: 50, mobile: false }).init();
-        }}
-      />
+      <WowScript />
     </>
   );
 }

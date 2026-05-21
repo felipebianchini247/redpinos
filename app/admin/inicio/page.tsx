@@ -35,7 +35,7 @@ export default function AdminInicioPage() {
           <input name="heroTitulo" value={form.heroTitulo} onChange={(e) => setForm({ ...form, heroTitulo: e.target.value })} required />
         </div>
         <div className="form-group">
-          <label>Texto "Quiénes Somos" (en la home)</label>
+          <label>Texto &ldquo;Quiénes Somos&rdquo; (en la home)</label>
           <textarea name="quienesSomosBreve" value={form.quienesSomosBreve} onChange={(e) => setForm({ ...form, quienesSomosBreve: e.target.value })} required rows={6} />
         </div>
         <button type="submit" className="btn-primary" disabled={pending}>
