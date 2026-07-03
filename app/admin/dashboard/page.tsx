@@ -16,7 +16,7 @@ export default function DashboardPage() {
   return (
     <AdminLayout title="Panel de administración">
       <p style={{ color: 'var(--admin-text-muted, #777)', marginBottom: 24, fontSize: 14 }}>
-        Los cambios se publican automáticamente en el sitio en aproximadamente 30 segundos.
+        Los cambios se publican automáticamente en el sitio de forma instantánea.
       </p>
       <div className="dashboard-grid">
         {cards.map(({ href, icon, title, desc }) => (
