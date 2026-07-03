@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface ListField {
   name: string;
@@ -26,6 +26,9 @@ export default function ItemListEditor<T extends Record<string, string>>({
     fields.reduce((acc, f) => ({ ...acc, [f.name]: '' }), {} as T);
 
   const [items, setItems] = useState<T[]>(initialItems);
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [form, setForm] = useState<T>(emptyItem());
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
