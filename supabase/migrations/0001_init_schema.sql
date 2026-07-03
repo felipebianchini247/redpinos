@@ -8,6 +8,7 @@ create table if not exists pages (
 
 alter table pages enable row level security;
 
+drop policy if exists "Public read access on pages" on pages;
 create policy "Public read access on pages"
   on pages for select
   using (true);
@@ -24,6 +25,7 @@ create table if not exists novedades (
 
 alter table novedades enable row level security;
 
+drop policy if exists "Public read access on novedades" on novedades;
 create policy "Public read access on novedades"
   on novedades for select
   using (true);
@@ -41,6 +43,7 @@ insert into storage.buckets (id, name, public)
 values ('uploads', 'uploads', true)
 on conflict (id) do nothing;
 
+drop policy if exists "Public read access on uploads bucket" on storage.objects;
 create policy "Public read access on uploads bucket"
   on storage.objects for select
   using (bucket_id = 'uploads');
