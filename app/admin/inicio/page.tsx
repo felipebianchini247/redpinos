@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import ItemListEditor from '@/components/admin/ItemListEditor';
 import { saveContentAction } from '../actions';
-import type { HomeContent, CardIcon, CardImg, StepItem } from '@/lib/content';
+import type { HomeContent } from '@/lib/content';
 
 const empty: HomeContent = {
   heroTitulo: '',
@@ -117,7 +117,7 @@ export default function AdminInicioPage() {
           { name: 'title', label: 'Título', type: 'text' },
           { name: 'text', label: 'Texto', type: 'textarea' },
         ]}
-        items={content.deQueSeTrata as (CardIcon & Record<string, string>)[]}
+        items={content.deQueSeTrata}
         onSave={(items) => saveContentAction('home', { deQueSeTrata: items })}
         previewTitle={(item) => item.title}
         previewSubtitle={(item) => item.text.slice(0, 100)}
@@ -130,7 +130,7 @@ export default function AdminInicioPage() {
           { name: 'title', label: 'Título', type: 'text' },
           { name: 'text', label: 'Texto', type: 'textarea' },
         ]}
-        items={content.entendiendoElDesafio as (CardImg & Record<string, string>)[]}
+        items={content.entendiendoElDesafio}
         onSave={(items) => saveContentAction('home', { entendiendoElDesafio: items })}
         previewTitle={(item) => item.title}
         previewSubtitle={(item) => item.text.slice(0, 100)}
@@ -142,7 +142,7 @@ export default function AdminInicioPage() {
           { name: 'icon', label: 'Ícono (clase Font Awesome)', type: 'text' },
           { name: 'label', label: 'Texto', type: 'text' },
         ]}
-        items={content.registroCiudadano as (StepItem & Record<string, string>)[]}
+        items={content.registroCiudadano}
         onSave={(items) => saveContentAction('home', { registroCiudadano: items })}
         previewTitle={(item) => item.label}
       />
