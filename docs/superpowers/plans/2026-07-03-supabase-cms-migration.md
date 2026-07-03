@@ -1157,11 +1157,15 @@ dotenv.config({ path: '.env.local' });
 import fs from 'fs';
 import path from 'path';
 import { createClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 
 const url = process.env.SUPABASE_URL;
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 if (!url || !key) throw new Error('SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set in .env.local');
-const supabase = createClient(url, key, { auth: { persistSession: false } });
+const supabase = createClient(url, key, {
+  auth: { persistSession: false },
+  realtime: { transport: WebSocket as unknown as typeof globalThis.WebSocket },
+});
 
 const contentDir = path.join(process.cwd(), 'content');
 const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
