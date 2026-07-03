@@ -1,16 +1,5 @@
 import { jest } from '@jest/globals';
 
-// Mock the Supabase module to handle WebSocket issue in Node.js 20
-jest.unstable_mockModule('@supabase/supabase-js', () => {
-  return {
-    createClient: jest.fn((url: string, key: string, options: any) => ({
-      from: jest.fn(),
-      auth: {},
-      realtime: null,
-    })),
-  };
-});
-
 describe('getSupabaseAdmin', () => {
   const originalUrl = process.env.SUPABASE_URL;
   const originalKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
