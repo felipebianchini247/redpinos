@@ -2,8 +2,10 @@
 import { getFaqContent } from '@/lib/content';
 import FAQAccordion from '@/components/FAQAccordion';
 
-export default function PreguntasFrecuentesPage() {
-  const faqs = getFaqContent();
+export const dynamic = 'force-dynamic';
+
+export default async function PreguntasFrecuentesPage() {
+  const { h1, items } = await getFaqContent();
 
   return (
     <>
@@ -14,7 +16,7 @@ export default function PreguntasFrecuentesPage() {
         <div className="relative container align-left">
           <div className="row">
             <div className="col-md-8">
-              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">Preguntas Frecuentes</h1>
+              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">{h1}</h1>
             </div>
           </div>
         </div>
@@ -24,7 +26,7 @@ export default function PreguntasFrecuentesPage() {
         <div className="container relative">
           <div className="row section-text">
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
-              <FAQAccordion faqs={faqs} />
+              <FAQAccordion faqs={items} />
             </div>
           </div>
         </div>
