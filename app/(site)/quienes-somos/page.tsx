@@ -1,9 +1,11 @@
 // app/(site)/quienes-somos/page.tsx
 import { getQuienesSomosContent } from '@/lib/content';
 
-export default function QuienesSomosPage() {
-  const { aniofundacion, campaniasExitosas, focosDetectados, textoIntegrantes } =
-    getQuienesSomosContent();
+export const dynamic = 'force-dynamic';
+
+export default async function QuienesSomosPage() {
+  const { h1, subtitulo, aniofundacion, campaniasExitosas, focosDetectados, integrantesTitulo, textoIntegrantes } =
+    await getQuienesSomosContent();
 
   return (
     <>
@@ -14,8 +16,8 @@ export default function QuienesSomosPage() {
         <div className="relative container align-left">
           <div className="row">
             <div className="col-md-8">
-              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">Acerca de nosotros</h1>
-              <div className="hs-line-4 font-alt">Juntos somos +</div>
+              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">{h1}</h1>
+              <div className="hs-line-4 font-alt">{subtitulo}</div>
             </div>
           </div>
         </div>
@@ -53,7 +55,7 @@ export default function QuienesSomosPage() {
           <div className="split-section-content small-section pt-100 pb-100 pt-sm-50 pb-sm-50">
             <div className="split-section-wrapper left">
               <div className="text">
-                <h2 className="font-alt mt-0 mb-50 mb-xxs-20">Integrantes</h2>
+                <h2 className="font-alt mt-0 mb-50 mb-xxs-20">{integrantesTitulo}</h2>
                 <div className="row">
                   <div className="col">
                     <div className="alt-service-item mt-0 mb-20">
