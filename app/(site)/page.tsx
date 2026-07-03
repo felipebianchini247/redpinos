@@ -47,7 +47,7 @@ export default async function HomePage() {
       {/* Quiénes Somos Section */}
       <section className="page-section" id="about">
         <div className="container relative">
-          <h2 className="section-title font-alt mb-70 mb-sm-40">QUIÉNES SOMOS</h2>
+          <h2 className="section-title font-alt mb-70 mb-sm-40">Cuando ciencia y tecnología no alcanzan: gobernanza y acción colectiva.</h2>
           <div className="row mb-60">
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
               <div className="section-text align-center">{quienesSomosBreve}</div>
