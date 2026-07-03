@@ -551,7 +551,7 @@ describe('getQuienesSomosContent', () => {
 describe('getNovedades', () => {
   it('returns novedades ordered by fecha descending', async () => {
     mockFrom.mockImplementation(() => ({
-      select: () => ({ order: mockOrder },),
+      select: () => ({ order: mockOrder }),
     }));
     mockOrder.mockResolvedValue({
       data: [
@@ -733,7 +733,7 @@ export async function getNoticiaBySlug(slug: string): Promise<Noticia | undefine
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `npm test -- __tests__/content.test.ts`
-Expected: PASS (6 tests)
+Expected: PASS (5 tests)
 
 - [ ] **Step 5: Commit**
 
