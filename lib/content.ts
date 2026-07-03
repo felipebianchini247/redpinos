@@ -1,9 +1,9 @@
 import { getSupabaseAdmin } from './supabase';
 
-export interface CardIcon { icon: string; title: string; text: string }
-export interface CardImg { img: string; title: string; text: string }
-export interface StepItem { icon: string; label: string }
-export interface FaqItem { q: string; a: string }
+export interface CardIcon { icon: string; title: string; text: string; [key: string]: string }
+export interface CardImg { img: string; title: string; text: string; [key: string]: string }
+export interface StepItem { icon: string; label: string; [key: string]: string }
+export interface FaqItem { q: string; a: string; [key: string]: string }
 
 export interface HomeContent {
   heroTitulo: string;
