@@ -1364,8 +1364,10 @@ import { getHomeContent, getContactoContent } from '@/lib/content';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const { heroTitulo, quienesSomosBreve, deQueSeTrataTitulo, deQueSeTrata, entendiendoElDesafioTitulo, entendiendoElDesafioIntro, entendiendoElDesafio, registroCiudadanoTitulo, registroCiudadano, voluntarioTitulo, voluntarioTexto } = await getHomeContent();
-  const { whatsapp, direccion, email } = await getContactoContent();
+  const [
+    { heroTitulo, quienesSomosBreve, deQueSeTrataTitulo, deQueSeTrata, entendiendoElDesafioTitulo, entendiendoElDesafioIntro, entendiendoElDesafio, registroCiudadanoTitulo, registroCiudadano, voluntarioTitulo, voluntarioTexto },
+    { whatsapp, direccion, email },
+  ] = await Promise.all([getHomeContent(), getContactoContent()]);
 
   return (
     <>
@@ -1435,8 +1437,8 @@ export default async function HomePage() {
               <div className="text">
                 <h2 className="font-alt mt-0 mb-50 mb-xxs-20">{deQueSeTrataTitulo}</h2>
                 <div className="row">
-                  {deQueSeTrata.map(({ icon, title, text }) => (
-                    <div key={title} className="col-sm-6">
+                  {deQueSeTrata.map(({ icon, title, text }, i) => (
+                    <div key={i} className="col-sm-6">
                       <div className="alt-service-item mt-0 mb-20">
                         <div className="alt-service-icon"><i className={icon} /></div>
                         <h3 className="alt-services-title font-alt">{title}</h3>
@@ -1464,7 +1466,7 @@ export default async function HomePage() {
           </div>
           <div className="row multi-columns-row mb-20 mb-xs-10">
             {entendiendoElDesafio.map(({ img, title, text }, i) => (
-              <div key={title} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${(i + 1) * 0.1}s`} data-wow-duration="2s">
+              <div key={i} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${(i + 1) * 0.1}s`} data-wow-duration="2s">
                 <div className="post-prev-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/images/${img}`} alt={title} />
@@ -1489,7 +1491,7 @@ export default async function HomePage() {
           <h2 className="section-title font-alt mb-70 mb-sm-40">{registroCiudadanoTitulo}</h2>
           <div className="row alt-features-grid font-alt">
             {registroCiudadano.map(({ icon, label }, i) => (
-              <div key={label} className="col-sm-4 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.1}s`}>
+              <div key={i} className="col-sm-4 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.1}s`}>
                 <div className="alt-features-item align-center">
                   <i className={icon} />
                   <h3 className="alt-features-title">{label}</h3>
@@ -1710,8 +1712,8 @@ export default async function ObjetivosPage() {
           </div>
           <hr className="mt-0 mb-80 mb-xs-40" />
           <div className="row multi-columns-row alt-features-grid">
-            {items.map(({ icon, title, text }) => (
-              <div key={title} className="col-sm-6 col-md-4 col-lg-4">
+            {items.map(({ icon, title, text }, i) => (
+              <div key={i} className="col-sm-6 col-md-4 col-lg-4">
                 <div className="alt-features-item align-center">
                   <div className="mb-10"><i className={icon} /></div>
                   <h3 className="alt-features-title font-alt">{title}</h3>
@@ -1730,7 +1732,7 @@ export default async function ObjetivosPage() {
         <div className="container relative">
           <div className="row alt-features-grid font-alt">
             {pasos.map(({ icon, label }, i) => (
-              <div key={label} className="col-sm-4 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.1}s`}>
+              <div key={i} className="col-sm-4 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.1}s`}>
                 <div className="alt-features-item align-center">
                   <div className="alt-features-icon white"><span className={icon} /></div>
                   <h3 className="alt-features-title">{label}</h3>
@@ -1799,7 +1801,7 @@ export default async function ComoParticiparPage() {
           </div>
           <div className="row multi-columns-row mb-20 mb-xs-10">
             {items.map(({ img, title, text }, i) => (
-              <div key={title} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${((i % 3) + 1) * 0.1}s`} data-wow-duration="2s">
+              <div key={i} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${((i % 3) + 1) * 0.1}s`} data-wow-duration="2s">
                 <div className="post-prev-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/images/${img}`} alt={title} />
