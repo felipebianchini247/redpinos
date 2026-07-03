@@ -3,13 +3,15 @@ import { getNovedades, getNoticiaBySlug } from '@/lib/content';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
-  const novedades = getNovedades();
+  const novedades = await getNovedades();
   return novedades.map((n) => ({ slug: n.slug }));
 }
 
-export default function NoticiaPage({ params }: { params: { slug: string } }) {
-  const noticia = getNoticiaBySlug(params.slug);
+export default async function NoticiaPage({ params }: { params: { slug: string } }) {
+  const noticia = await getNoticiaBySlug(params.slug);
   if (!noticia) notFound();
 
   return (

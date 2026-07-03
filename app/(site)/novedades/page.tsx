@@ -2,8 +2,10 @@
 import Link from 'next/link';
 import { getNovedades } from '@/lib/content';
 
-export default function NovedadesPage() {
-  const novedades = getNovedades();
+export const dynamic = 'force-dynamic';
+
+export default async function NovedadesPage() {
+  const novedades = await getNovedades();
 
   return (
     <>
