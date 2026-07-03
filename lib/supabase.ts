@@ -9,5 +9,8 @@ export function getSupabaseAdmin(): SupabaseClient {
   return createClient(url, key, {
     auth: { persistSession: false },
     realtime: { transport: WebSocket as unknown as typeof globalThis.WebSocket },
+    global: {
+      fetch: (input, init) => fetch(input, { ...init, cache: 'no-store' }),
+    },
   });
 }
