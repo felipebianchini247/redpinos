@@ -3,18 +3,27 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { verifyCredentials, createSessionToken } from '@/lib/auth';
-import { getFileFromGitHub, updateFileInGitHub, uploadFileToGitHub } from '@/lib/github';
-import { slugify } from '@/lib/slugify';
-import type { Noticia, HomeContent, QuienesSomosContent, ObjetivosContent, ComoParticiparContent, FaqItem, ContactoContent } from '@/lib/content';
+import { isLockedOut, recordFailedAttempt, resetAttempts } from '@/lib/rateLimiter';
+import { getSupabaseAdmin } from '@/lib/supabase';
+import type { Noticia } from '@/lib/content';
+
+type PageSlug = 'home' | 'quienes-somos' | 'objetivos' | 'como-participar' | 'faq' | 'contacto';
 
 // AUTH
 export async function loginAction(formData: FormData) {
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
 
+  if (await isLockedOut(username)) {
+    return { error: 'Demasiados intentos fallidos. Probá de nuevo en unos minutos.' };
+  }
+
   if (!verifyCredentials(username, password)) {
+    await recordFailedAttempt(username);
     return { error: 'Usuario o contraseña incorrectos' };
   }
+
+  await resetAttempts(username);
 
   const token = await createSessionToken();
   cookies().set('admin_session', token, {
@@ -33,8 +42,28 @@ export async function logoutAction() {
   redirect('/admin');
 }
 
+// GENERIC PAGE CONTENT (home, quienes-somos, objetivos, como-participar, faq, contacto)
+export async function saveContentAction(slug: PageSlug, patch: Record<string, unknown>) {
+  const supabase = getSupabaseAdmin();
+  const { data: existing, error: fetchError } = await supabase
+    .from('pages')
+    .select('content')
+    .eq('slug', slug)
+    .single();
+  if (fetchError || !existing) return { success: false };
+
+  const content = { ...(existing.content as Record<string, unknown>), ...patch };
+  const { error } = await supabase
+    .from('pages')
+    .update({ content, updated_at: new Date().toISOString() })
+    .eq('slug', slug);
+
+  return { success: !error };
+}
+
 // NOVEDADES
 export async function saveNoticiaAction(formData: FormData) {
+  const supabase = getSupabaseAdmin();
   const id = formData.get('id') as string | null;
   const titulo = formData.get('titulo') as string;
   const texto = formData.get('texto') as string;
@@ -42,109 +71,39 @@ export async function saveNoticiaAction(formData: FormData) {
   const imagenExistente = (formData.get('imagenExistente') as string) || '';
   const imagenFile = formData.get('imagen') as File | null;
 
-  const { content: rawJson, sha } = await getFileFromGitHub('content/novedades.json');
-  const novedades: Noticia[] = JSON.parse(rawJson);
-
   let imagenPath = imagenExistente;
   if (imagenFile && imagenFile.size > 0) {
     const ext = imagenFile.name.split('.').pop() ?? 'jpg';
     const filename = `${Date.now()}.${ext}`;
-    const bytes = await imagenFile.arrayBuffer();
-    const base64 = Buffer.from(bytes).toString('base64');
-    await uploadFileToGitHub(`public/uploads/${filename}`, base64);
-    imagenPath = `/uploads/${filename}`;
+    const { error: uploadError } = await supabase.storage
+      .from('uploads')
+      .upload(filename, imagenFile, { contentType: imagenFile.type });
+    if (uploadError) return { success: false };
+    const { data: publicUrl } = supabase.storage.from('uploads').getPublicUrl(filename);
+    imagenPath = publicUrl.publicUrl;
   }
 
   if (id) {
-    const idx = novedades.findIndex((n) => n.id === id);
-    if (idx >= 0) {
-      novedades[idx] = { ...novedades[idx], titulo, texto, fecha, imagen: imagenPath };
-    }
-  } else {
-    const newNoticia: Noticia = {
-      id: crypto.randomUUID(),
-      slug: slugify(titulo),
-      titulo,
-      texto,
-      imagen: imagenPath,
-      fecha,
-      creadoEn: new Date().toISOString(),
-    };
-    novedades.unshift(newNoticia);
+    const { error } = await supabase
+      .from('novedades')
+      .update({ titulo, texto, fecha, imagen: imagenPath })
+      .eq('id', id);
+    return { success: !error };
   }
 
-  await updateFileInGitHub('content/novedades.json', JSON.stringify(novedades, null, 2), sha);
-  return { success: true };
+  const { slugify } = await import('@/lib/slugify');
+  const { error } = await supabase.from('novedades').insert({
+    slug: slugify(titulo),
+    titulo,
+    texto,
+    imagen: imagenPath,
+    fecha,
+  });
+  return { success: !error };
 }
 
 export async function deleteNoticiaAction(id: string) {
-  const { content: rawJson, sha } = await getFileFromGitHub('content/novedades.json');
-  const novedades: Noticia[] = JSON.parse(rawJson);
-  const updated = novedades.filter((n) => n.id !== id);
-  await updateFileInGitHub('content/novedades.json', JSON.stringify(updated, null, 2), sha);
-  return { success: true };
-}
-
-// HOME
-export async function saveHomeAction(formData: FormData) {
-  const data: HomeContent = {
-    heroTitulo: formData.get('heroTitulo') as string,
-    quienesSomosBreve: formData.get('quienesSomosBreve') as string,
-  };
-  const { sha } = await getFileFromGitHub('content/home.json');
-  await updateFileInGitHub('content/home.json', JSON.stringify(data, null, 2), sha);
-  return { success: true };
-}
-
-// QUIENES SOMOS
-export async function saveQuienesSomosAction(formData: FormData) {
-  const data: QuienesSomosContent = {
-    aniofundacion: formData.get('aniofundacion') as string,
-    campaniasExitosas: formData.get('campaniasExitosas') as string,
-    focosDetectados: formData.get('focosDetectados') as string,
-    textoIntegrantes: formData.get('textoIntegrantes') as string,
-  };
-  const { sha } = await getFileFromGitHub('content/quienesSomos.json');
-  await updateFileInGitHub('content/quienesSomos.json', JSON.stringify(data, null, 2), sha);
-  return { success: true };
-}
-
-// OBJETIVOS
-export async function saveObjetivosAction(formData: FormData) {
-  const data: ObjetivosContent = {
-    introTexto: formData.get('introTexto') as string,
-  };
-  const { sha } = await getFileFromGitHub('content/objetivos.json');
-  await updateFileInGitHub('content/objetivos.json', JSON.stringify(data, null, 2), sha);
-  return { success: true };
-}
-
-// COMO PARTICIPAR
-export async function saveComoParticiparAction(formData: FormData) {
-  const data: ComoParticiparContent = {
-    introTexto: formData.get('introTexto') as string,
-  };
-  const { sha } = await getFileFromGitHub('content/comoParticipar.json');
-  await updateFileInGitHub('content/comoParticipar.json', JSON.stringify(data, null, 2), sha);
-  return { success: true };
-}
-
-// FAQ
-export async function saveFaqAction(items: FaqItem[]) {
-  const { sha } = await getFileFromGitHub('content/faq.json');
-  await updateFileInGitHub('content/faq.json', JSON.stringify(items, null, 2), sha);
-  return { success: true };
-}
-
-// CONTACTO
-export async function saveContactoAction(formData: FormData) {
-  const data: ContactoContent = {
-    whatsapp: formData.get('whatsapp') as string,
-    whatsappNota: formData.get('whatsappNota') as string,
-    email: formData.get('email') as string,
-    direccion: formData.get('direccion') as string,
-  };
-  const { sha } = await getFileFromGitHub('content/contacto.json');
-  await updateFileInGitHub('content/contacto.json', JSON.stringify(data, null, 2), sha);
-  return { success: true };
+  const supabase = getSupabaseAdmin();
+  const { error } = await supabase.from('novedades').delete().eq('id', id);
+  return { success: !error };
 }
