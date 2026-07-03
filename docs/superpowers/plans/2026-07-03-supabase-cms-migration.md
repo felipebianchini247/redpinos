@@ -275,14 +275,31 @@ Create `lib/supabase.ts`:
 
 ```typescript
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import WebSocket from 'ws';
 
 export function getSupabaseAdmin(): SupabaseClient {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url) throw new Error('SUPABASE_URL env var is required');
   if (!key) throw new Error('SUPABASE_SERVICE_ROLE_KEY env var is required');
-  return createClient(url, key, { auth: { persistSession: false } });
+  return createClient(url, key, {
+    auth: { persistSession: false },
+    realtime: { transport: WebSocket as unknown as typeof globalThis.WebSocket },
+  });
 }
+```
+
+**Node compatibility note:** `@supabase/supabase-js`'s `createClient()` eagerly
+constructs a `RealtimeClient`, which throws synchronously on Node < 22
+("Node.js 20 detected without native WebSocket support") unless a WebSocket
+implementation is explicitly provided — this project's code never uses
+realtime subscriptions, but the client still fails to construct without this.
+Add `ws` as a **real runtime dependency** (not a transitive one) and
+`@types/ws` as a dev dependency before writing the implementation:
+
+```bash
+npm install ws
+npm install -D @types/ws
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
