@@ -117,7 +117,7 @@ export default async function HomePage() {
             ))}
           </div>
           <div className="align-center">
-            <a href="/objetivos" className="btn btn-mod btn-round btn-large">SABER MÁS</a>
+            <a href="/herramientas" className="btn btn-mod btn-round btn-large">SABER MÁS</a>
           </div>
         </div>
       </section>

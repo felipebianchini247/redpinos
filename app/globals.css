@@ -22,3 +22,16 @@ html {
 .main-nav.small-height .inner-nav ul > li > a {
   height: 55px;
 }
+
+/* Let the navbar grow instead of clipping when the menu wraps to two
+   lines (narrow-ish desktop widths, or right after first paint before
+   a scrollbar appears/disappears). The template hardcodes a fixed
+   height, which overflows and looks unpadded when content wraps. */
+.main-nav {
+  height: auto !important;
+  min-height: 75px;
+}
+
+.main-nav.small-height {
+  min-height: 55px;
+}

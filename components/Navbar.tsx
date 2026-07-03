@@ -7,9 +7,10 @@ import Image from 'next/image';
 const navLinks = [
   { href: '/', label: 'Inicio' },
   { href: '/quienes-somos', label: 'Quiénes Somos' },
-  { href: '/objetivos', label: 'Objetivos' },
+  { href: '/objetivos', label: 'Acciones' },
   { href: '/como-participar', label: 'Cómo Participar' },
   { href: '/novedades', label: 'Novedades' },
+  { href: '/herramientas', label: 'Herramientas' },
   { href: '/preguntas-frecuentes', label: 'Preguntas Frecuentes' },
   { href: '/contacto', label: 'Contacto' },
 ];
