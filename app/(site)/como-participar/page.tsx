@@ -1,16 +1,10 @@
 // app/(site)/como-participar/page.tsx
 import { getComoParticiparContent } from '@/lib/content';
 
-const items = [
-  { img: 'sensibilizacion.png', title: 'Sensibilización', delay: '0.1s', text: 'Compartí información sobre las invasiones de pinos y actividades de la Red con tu círculo y redes sociales, utilizando materiales, contenidos y novedades de la Red PINOS.\nParticipá en charlas, talleres y eventos organizados por la Red PINOS.' },
-  { img: 'controlyrestauracion.png', title: 'Control y Restauración', delay: '0.3s', text: 'Unite a las campañas de remoción manual de plántulas y renovales de pinos invasores.\nParticipá en talleres de capacitación: aprendé sobre las mejores prácticas para la identificación, la remoción de pinos invasores y la gestión de áreas intervenidas.' },
-  { img: 'monitoreoyregistro.png', title: 'Monitoreo y Registro', delay: '0.2s', text: 'Participá en evaluaciones del impacto de las intervenciones. Colaborá en el mapeo participativo de focos de invasiones, identificando, registrando y compartiendo fotos y ubicaciones.' },
-  { img: 'gobernanzaycolaboracion.png', title: 'Gobernanza y Colaboración', delay: '0.1s', text: 'La Red PINOS conecta y articula personas e instituciones, promoviendo el intercambio de conocimientos e información, la colaboración, y la resolución de conflictos. Participá en la toma de decisiones y en la planificación de las acciones de la Red PINOS.' },
-  { img: 'formacioneinvestigacion.png', title: 'Formación e Investigación', delay: '0.2s', text: 'Realizá estudios de investigación y tesis, profundizando en las diferentes líneas de trabajo de la Red. Colaborá con equipos de investigación en la recopilación de datos, análisis de información y desarrollo de estudios sobre las invasiones de pinos.' },
-];
+export const dynamic = 'force-dynamic';
 
-export default function ComoParticiparPage() {
-  const { introTexto } = getComoParticiparContent();
+export default async function ComoParticiparPage() {
+  const { h1, subtitulo, introTexto, items } = await getComoParticiparContent();
 
   return (
     <>
@@ -21,8 +15,8 @@ export default function ComoParticiparPage() {
         <div className="relative container align-left">
           <div className="row">
             <div className="col-md-8">
-              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">Cómo participar</h1>
-              <div className="hs-line-4 font-alt">Convertite en voluntario de Red PINOS y ayudanos a cuidar el bosque.</div>
+              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">{h1}</h1>
+              <div className="hs-line-4 font-alt">{subtitulo}</div>
             </div>
           </div>
         </div>
@@ -38,8 +32,8 @@ export default function ComoParticiparPage() {
             </div>
           </div>
           <div className="row multi-columns-row mb-20 mb-xs-10">
-            {items.map(({ img, title, delay, text }) => (
-              <div key={title} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={delay} data-wow-duration="2s">
+            {items.map(({ img, title, text }, i) => (
+              <div key={i} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${((i % 3) + 1) * 0.1}s`} data-wow-duration="2s">
                 <div className="post-prev-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={`/images/${img}`} alt={title} />
