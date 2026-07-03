@@ -1,14 +1,9 @@
 // app/(site)/novedades/[slug]/page.tsx
-import { getNovedades, getNoticiaBySlug } from '@/lib/content';
+import { getNoticiaBySlug } from '@/lib/content';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
-
-export async function generateStaticParams() {
-  const novedades = await getNovedades();
-  return novedades.map((n) => ({ slug: n.slug }));
-}
 
 export default async function NoticiaPage({ params }: { params: { slug: string } }) {
   const noticia = await getNoticiaBySlug(params.slug);
