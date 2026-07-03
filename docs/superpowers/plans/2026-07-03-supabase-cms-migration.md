@@ -999,7 +999,6 @@ import { redirect } from 'next/navigation';
 import { verifyCredentials, createSessionToken } from '@/lib/auth';
 import { isLockedOut, recordFailedAttempt, resetAttempts } from '@/lib/rateLimiter';
 import { getSupabaseAdmin } from '@/lib/supabase';
-import type { Noticia } from '@/lib/content';
 
 type PageSlug = 'home' | 'quienes-somos' | 'objetivos' | 'como-participar' | 'faq' | 'contacto';
 
@@ -1041,18 +1040,31 @@ export async function saveContentAction(slug: PageSlug, patch: Record<string, un
   const supabase = getSupabaseAdmin();
   const { data: existing, error: fetchError } = await supabase
     .from('pages')
-    .select('content')
+    .select('content, updated_at')
     .eq('slug', slug)
     .single();
-  if (fetchError || !existing) return { success: false };
+  if (fetchError || !existing) {
+    console.error(`saveContentAction: failed to load "${slug}"`, fetchError);
+    return { success: false };
+  }
 
   const content = { ...(existing.content as Record<string, unknown>), ...patch };
-  const { error } = await supabase
+  const { error, data: updatedRows } = await supabase
     .from('pages')
     .update({ content, updated_at: new Date().toISOString() })
-    .eq('slug', slug);
+    .eq('slug', slug)
+    .eq('updated_at', existing.updated_at as string)
+    .select();
 
-  return { success: !error };
+  if (error) {
+    console.error(`saveContentAction: update failed for "${slug}"`, error);
+    return { success: false };
+  }
+  if (!updatedRows || updatedRows.length === 0) {
+    console.error(`saveContentAction: conflict for "${slug}" — content changed since it was loaded`);
+    return { success: false };
+  }
+  return { success: true };
 }
 
 // NOVEDADES
