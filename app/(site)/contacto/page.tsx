@@ -1,8 +1,10 @@
 // app/(site)/contacto/page.tsx
 import { getContactoContent } from '@/lib/content';
 
-export default function ContactoPage() {
-  const { whatsapp, whatsappNota, email, direccion } = getContactoContent();
+export const dynamic = 'force-dynamic';
+
+export default async function ContactoPage() {
+  const { h1, subtitulo, whatsapp, whatsappNota, email, direccion } = await getContactoContent();
 
   return (
     <>
@@ -13,8 +15,8 @@ export default function ContactoPage() {
         <div className="relative container align-left">
           <div className="row">
             <div className="col-md-8">
-              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">Contacto</h1>
-              <div className="hs-line-4 font-alt">Ponete en contacto con nosotros</div>
+              <h1 className="hs-line-11 font-alt mb-20 mb-xs-0">{h1}</h1>
+              <div className="hs-line-4 font-alt">{subtitulo}</div>
             </div>
           </div>
         </div>
