@@ -1,8 +1,11 @@
 // app/(site)/page.tsx
-import { getHomeContent } from '@/lib/content';
+import { getHomeContent, getContactoContent } from '@/lib/content';
 
-export default function HomePage() {
-  const { heroTitulo, quienesSomosBreve } = getHomeContent();
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const { heroTitulo, quienesSomosBreve, deQueSeTrataTitulo, deQueSeTrata, entendiendoElDesafioTitulo, entendiendoElDesafioIntro, entendiendoElDesafio, registroCiudadanoTitulo, registroCiudadano, voluntarioTitulo, voluntarioTexto } = await getHomeContent();
+  const { whatsapp, direccion, email } = await getContactoContent();
 
   return (
     <>
@@ -70,36 +73,17 @@ export default function HomePage() {
           <div className="split-section-content small-section pt-100 pb-100 pt-sm-50 pb-sm-50">
             <div className="split-section-wrapper left">
               <div className="text">
-                <h2 className="font-alt mt-0 mb-50 mb-xxs-20">DE QUÉ SE TRATA</h2>
+                <h2 className="font-alt mt-0 mb-50 mb-xxs-20">{deQueSeTrataTitulo}</h2>
                 <div className="row">
-                  <div className="col-sm-6">
-                    <div className="alt-service-item mt-0 mb-20">
-                      <div className="alt-service-icon"><i className="fa fa-question" /></div>
-                      <h3 className="alt-services-title font-alt">¿Qué es la gobernanza ambiental?</h3>
-                      La gobernanza ambiental representa un intento de solución a problemas ambientales complejos, a través de la articulación de esfuerzos gubernamentales con iniciativas desde la sociedad civil.
+                  {deQueSeTrata.map(({ icon, title, text }) => (
+                    <div key={title} className="col-sm-6">
+                      <div className="alt-service-item mt-0 mb-20">
+                        <div className="alt-service-icon"><i className={icon} /></div>
+                        <h3 className="alt-services-title font-alt">{title}</h3>
+                        {text}
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="alt-service-item mt-0 mb-20">
-                      <div className="alt-service-icon"><i className="fa fa-users" /></div>
-                      <h3 className="alt-services-title font-alt">La importancia de la participación ciudadana</h3>
-                      Esa gobernanza ambiental es participativa, cuando parte de la premisa de que el conocimiento y el involucramiento de los actores sociales promueve la legitimidad y efectividad de las decisiones, y ofrece los mecanismos adecuados para ese involucramiento en procesos colaborativos.
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="alt-service-item mt-0 mb-20">
-                      <div className="alt-service-icon"><i className="fa fa-tree" /></div>
-                      <h3 className="alt-services-title font-alt">El origen de la Red PINOS</h3>
-                      Los procesos colaborativos en torno a problemas ambientales pueden darse por iniciativa de cualquiera de las partes. En nuestro caso, un grupo de investigadores de la Fundación Bariloche y del INIBIOMA iniciaron la construcción de esta Red en septiembre de 2021, en el marco de la Agenda Bosque Bariloche (ABB), de la Agenda Científica Participativa (ACP).
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="alt-service-item mt-0 mb-20">
-                      <div className="alt-service-icon"><i className="fa fa-line-chart" /></div>
-                      <h3 className="alt-services-title font-alt">Un crecimiento basado en la colaboración</h3>
-                      Desde entonces, la Red PINOS ha ido creciendo y hoy nuclea participantes de 8 instituciones gubernamentales y no gubernamentales, así como un número en constante crecimiento de voluntarios, seguidores y colaboradores en las distintas líneas de trabajo de la Red.
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -110,20 +94,16 @@ export default function HomePage() {
       {/* Entendiendo el Desafío */}
       <section className="page-section">
         <div className="container relative">
-          <h2 className="section-title font-alt mb-70 mb-sm-40">Entendiendo el desafío</h2>
+          <h2 className="section-title font-alt mb-70 mb-sm-40">{entendiendoElDesafioTitulo}</h2>
           <div className="row">
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
               <div className="section-text align-center mb-70 mb-xs-40">
-                Conocé el problema, sus consecuencias y cómo trabajamos para solucionarlo.
+                {entendiendoElDesafioIntro}
               </div>
             </div>
           </div>
           <div className="row multi-columns-row mb-20 mb-xs-10">
-            {[
-              { img: 'InvasionesGPT.png', title: 'Invasiones', text: 'Los pinos exóticos avanzan sobre áreas naturales y periurbanas de la Patagonia, desplazando a la vegetación nativa y alterando los ecosistemas. Su expansión es rápida y, si no se controla, amenaza la salud de nuestros bosques y paisajes.' },
-              { img: 'problemaGPT.png', title: 'El Problema', text: 'La invasión de pinos genera pérdida de biodiversidad, aumento del riesgo de incendios y cambios en el paisaje que afectan la economía, la seguridad y la calidad de vida. Cuanto más tardemos en actuar, más costosa y difícil será la solución.' },
-              { img: 'nuestraVisionGPT.png', title: 'Nuestra Visión', text: 'Creemos que la solución está en la colaboración: unir ciencia, ciudadanía e instituciones para actuar de manera temprana y efectiva. Buscamos un modelo de gobernanza ambiental participativa que proteja la Patagonia para las generaciones futuras.' },
-            ].map(({ img, title, text }, i) => (
+            {entendiendoElDesafio.map(({ img, title, text }, i) => (
               <div key={title} className="col-sm-6 col-md-4 col-lg-4 mb-20 wow fadeIn" data-wow-delay={`${(i + 1) * 0.1}s`} data-wow-duration="2s">
                 <div className="post-prev-img">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -146,14 +126,10 @@ export default function HomePage() {
         style={{ backgroundImage: "url('/images/invasionPinos2.png')" }}
       >
         <div className="container relative">
-          <h2 className="section-title font-alt mb-70 mb-sm-40">REGISTRO CIUDADANO DE PINOS</h2>
+          <h2 className="section-title font-alt mb-70 mb-sm-40">{registroCiudadanoTitulo}</h2>
           <div className="row alt-features-grid font-alt">
-            {[
-              { icon: 'fa-solid fa-person-hiking fa-2xl', label: 'Salís a pasear', delay: '0.1s' },
-              { icon: 'fa-solid fa-tree fa-2xl', label: 'Ves un pinito', delay: '0.2s' },
-              { icon: 'fa-solid fa-camera fa-2xl', label: 'Enviás foto y ubicación', delay: '0.3s' },
-            ].map(({ icon, label, delay }) => (
-              <div key={label} className="col-sm-4 wow fadeInRight" data-wow-delay={delay}>
+            {registroCiudadano.map(({ icon, label }, i) => (
+              <div key={label} className="col-sm-4 wow fadeInRight" data-wow-delay={`${(i + 1) * 0.1}s`}>
                 <div className="alt-features-item align-center">
                   <i className={icon} />
                   <h3 className="alt-features-title">{label}</h3>
@@ -167,11 +143,11 @@ export default function HomePage() {
       {/* Voluntario */}
       <section className="page-section" id="voluntario">
         <div className="container relative">
-          <h2 className="section-title font-alt mb-70 mb-sm-40">Convertite en voluntario</h2>
+          <h2 className="section-title font-alt mb-70 mb-sm-40">{voluntarioTitulo}</h2>
           <div className="row mb-60">
             <div className="col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
               <div className="section-text align-center">
-                Sumate a la Red PINOS y ayudanos a proteger la biodiversidad de la Patagonia. Participar es sencillo y tu aporte hace la diferencia en la detección y control de pinos invasores. ¡Tu acción es clave para conservar nuestros bosques!
+                {voluntarioTexto}
               </div>
             </div>
           </div>
@@ -194,14 +170,14 @@ export default function HomePage() {
                   <div className="contact-item">
                     <div className="ci-icon"><i className="fa fa-whatsapp" /></div>
                     <div className="ci-title font-alt">Whatsapp</div>
-                    <div className="ci-text">+54 9 294 413-0948</div>
+                    <div className="ci-text">{whatsapp}</div>
                   </div>
                 </div>
                 <div className="col-sm-6 col-lg-4 pt-20 pb-20 pb-xs-0">
                   <div className="contact-item">
                     <div className="ci-icon"><i className="fa fa-map-marker" /></div>
                     <div className="ci-title font-alt">Dirección</div>
-                    <div className="ci-text">Bariloche, Rio Negro, Argentina</div>
+                    <div className="ci-text">{direccion}</div>
                   </div>
                 </div>
                 <div className="col-sm-6 col-lg-4 pt-20 pb-20 pb-xs-0">
@@ -209,7 +185,7 @@ export default function HomePage() {
                     <div className="ci-icon"><i className="fa fa-envelope" /></div>
                     <div className="ci-title font-alt">Email</div>
                     <div className="ci-text">
-                      <a href="mailto:redpinosgobernanza@gmail.com">redpinosgobernanza@gmail.com</a>
+                      <a href={`mailto:${email}`}>{email}</a>
                     </div>
                   </div>
                 </div>
