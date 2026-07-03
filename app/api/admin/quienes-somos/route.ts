@@ -9,5 +9,5 @@ export async function GET() {
   if (!token || !(await verifySessionToken(token))) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
-  return NextResponse.json(getQuienesSomosContent());
+  return NextResponse.json(await getQuienesSomosContent());
 }
