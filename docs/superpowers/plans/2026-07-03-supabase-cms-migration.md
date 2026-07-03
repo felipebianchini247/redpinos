@@ -2593,7 +2593,7 @@ export default function AdminContactoPage() {
     e.preventDefault();
     setPending(true);
     setMessage(null);
-    const result = await saveContentAction('contacto', form);
+    const result = await saveContentAction('contacto', form as unknown as Record<string, unknown>);
     setMessage(result.success
       ? { type: 'success', text: 'Guardado.' }
       : { type: 'error', text: 'Error al guardar.' }
