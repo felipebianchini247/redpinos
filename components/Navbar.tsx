@@ -31,7 +31,7 @@ export default function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
-  const navClass = `main-nav dark stick-fixed${scrolled ? ' small-height' : ' transparent'}${mobileOpen ? ' mobile-on' : ''}`;
+  const navClass = `main-nav dark stick-fixed${scrolled ? ' small-height' : ' transparent'}`;
 
   return (
     <nav className={navClass}>
@@ -52,7 +52,7 @@ export default function Navbar() {
           <i className="fa fa-bars" />
           <span className="sr-only">Menu</span>
         </div>
-        <div className="inner-nav desktop-nav" style={mobileOpen ? { display: 'block' } : undefined}>
+        <div className={`inner-nav desktop-nav${mobileOpen ? ' mobile-on' : ''}`}>
           <ul className="clearlist local-scroll">
             {navLinks.map(({ href, label }) => (
               <li key={href}>

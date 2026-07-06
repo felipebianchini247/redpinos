@@ -41,6 +41,16 @@ html {
   min-height: 55px;
 }
 
+/* The transparent (unscrolled, top-of-page) state has no background of
+   its own, so the links sit flush against the very top edge of the
+   viewport with no visible breathing room — unlike the scrolled state,
+   which has a solid dark bar that reads as "padded" by contrast. Add
+   real padding here so the top state doesn't look cramped either. */
+.main-nav.transparent {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 /* Mobile nav: the template's own mobile dropdown CSS targets markup
    this component doesn't produce (it expects a wrapping ancestor to
    carry the "mobile-on" class; components/Navbar.tsx puts it directly
